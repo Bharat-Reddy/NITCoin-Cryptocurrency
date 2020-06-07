@@ -139,10 +139,6 @@ const getAccumulatedDifficulty = (aBlockchain: Block[]): number => {
         .reduce((a, b) => a + b);
 };
 
-const isValidTimestamp = (newBlock: Block, previousBlock: Block): boolean => {
-    return ( previousBlock.timestamp - 60 < newBlock.timestamp )
-        && newBlock.timestamp - 60 < getCurrentTimestamp();
-};
 
 const hasValidHash = (block: Block): boolean => {
 
