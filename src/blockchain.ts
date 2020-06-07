@@ -1,5 +1,6 @@
 import * as CryptoJS from 'crypto-js';
 import {broadcastLatest} from './p2p';
+import {hexToBinary} from './util';
 
 class Block {
 
