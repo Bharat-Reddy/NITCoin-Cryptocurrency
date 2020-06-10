@@ -67,12 +67,15 @@ const BLOCK_GENERATION_INTERVAL: number = 10;
 const DIFFICULTY_ADJUSTMENT_INTERVAL: number = 10;
 
 const getDifficultyFromTransactionAmount = (amount: number): number => {
-    if(amount<=20) return 10;
-    if(amount<=40) return 14;
-    if(amount<=60) return 15;
-    if(amount<=80) return 17;
-    if(amount<=100) return 20;
-    if(amount>100) return 23;
+    if(amount <= 100) {
+        const diffs: number[] = [15, 17, 20];
+        let i: number = Math.floor(Math.random() * 3);
+        return diffs[i];
+
+    }
+    else {
+        return 23;
+    }
 };
 
 const getModifiedDifficulty = (aTransaction: Transaction): number => {
@@ -112,11 +115,16 @@ const getCurrentTimestamp = (): number => Math.round(new Date().getTime() / 1000
 
 const generateRawNextBlock = (blockData: Transaction[]) => {
     const previousBlock: Block = getLatestBlock();
-    let difficulty: number = getDifficulty(getBlockchain());
+    let difficulty: number = 0;
 
     if(blockData.length>1) {
         difficulty = getModifiedDifficulty(blockData[1]);
     }
+    else {
+        difficulty = getDifficulty(getBlockchain());
+    }
+    console.log("Transaction Difficulty: ");
+    console.log(difficulty);
     const nextIndex: number = previousBlock.index + 1;
     const nextTimestamp: number = getCurrentTimestamp();
     const newBlock: Block = findBlock(nextIndex, previousBlock.hash, nextTimestamp, blockData, difficulty);
