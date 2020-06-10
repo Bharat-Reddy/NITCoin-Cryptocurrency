@@ -2,7 +2,7 @@ import * as CryptoJS from 'crypto-js';
 import * as _ from 'lodash';
 import {broadcastLatest, broadCastTransactionPool} from './p2p';
 import {
-    getCoinbaseTransaction, isValidAddress, processTransactions, Transaction, UnspentTxOut
+    getCoinbaseTransaction, isValidAddress, processTransactions, Transaction, UnspentTxOut, TxOut
 } from './transaction';
 import {addToTransactionPool, getTransactionPool, updateTransactionPool} from './transactionPool';
 import {hexToBinary} from './util';
@@ -66,6 +66,26 @@ const BLOCK_GENERATION_INTERVAL: number = 10;
 // in blocks
 const DIFFICULTY_ADJUSTMENT_INTERVAL: number = 10;
 
+const getDifficultyFromTransactionAmount = (amount: number): number => {
+    if(amount<=20) return 10;
+    if(amount<=40) return 14;
+    if(amount<=60) return 15;
+    if(amount<=80) return 17;
+    if(amount<=100) return 20;
+    if(amount>100) return 23;
+};
+
+const getModifiedDifficulty = (aTransaction: Transaction): number => {
+    let transactionvalue: number = 0;
+    const transactionOutArray: TxOut[] = aTransaction.txOuts;
+    for(let i=0;i<transactionOutArray.length;i++) {
+        const userTransaction : TxOut = transactionOutArray[i];
+        transactionvalue =transactionvalue+ userTransaction.amount;
+    }
+    return getDifficultyFromTransactionAmount(transactionvalue);
+};
+
+
 const getDifficulty = (aBlockchain: Block[]): number => {
     const latestBlock: Block = aBlockchain[blockchain.length - 1];
     if (latestBlock.index % DIFFICULTY_ADJUSTMENT_INTERVAL === 0 && latestBlock.index !== 0) {
@@ -92,7 +112,11 @@ const getCurrentTimestamp = (): number => Math.round(new Date().getTime() / 1000
 
 const generateRawNextBlock = (blockData: Transaction[]) => {
     const previousBlock: Block = getLatestBlock();
-    const difficulty: number = getDifficulty(getBlockchain());
+    let difficulty: number = getDifficulty(getBlockchain());
+
+    if(blockData.length>1) {
+        difficulty = getModifiedDifficulty(blockData[1]);
+    }
     const nextIndex: number = previousBlock.index + 1;
     const nextTimestamp: number = getCurrentTimestamp();
     const newBlock: Block = findBlock(nextIndex, previousBlock.hash, nextTimestamp, blockData, difficulty);
@@ -114,6 +138,20 @@ const generateNextBlock = () => {
     const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1);
     const blockData: Transaction[] = [coinbaseTx].concat(getTransactionPool());
     return generateRawNextBlock(blockData);
+};
+
+const generateNextBlock_modified = () => {
+    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1);
+    const transactionPool: Transaction[] = getTransactionPool();
+    if(transactionPool.length>0) {
+        const userTransaction: Transaction = transactionPool[transactionPool.length-1];
+        const blockData: Transaction[] = [coinbaseTx,userTransaction];
+        return generateRawNextBlock(blockData);
+    } else {
+        const blockData: Transaction[] = [coinbaseTx].concat(getTransactionPool());
+        return generateRawNextBlock(blockData);
+    }
+    
 };
 
 const generatenextBlockWithTransaction = (receiverAddress: string, amount: number) => {
@@ -295,5 +333,5 @@ export {
     Block, getBlockchain, getUnspentTxOuts, getLatestBlock, sendTransaction,
     generateRawNextBlock, generateNextBlock, generatenextBlockWithTransaction,
     handleReceivedTransaction, getMyUnspentTransactionOutputs,
-    getAccountBalance, isValidBlockStructure, replaceChain, addBlockToChain
+    getAccountBalance, isValidBlockStructure, replaceChain, addBlockToChain, generateNextBlock_modified
 };

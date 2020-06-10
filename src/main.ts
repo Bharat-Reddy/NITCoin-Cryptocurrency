@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as _ from 'lodash';
 import {
     Block, generateNextBlock, generatenextBlockWithTransaction, generateRawNextBlock, getAccountBalance,
-    getBlockchain, getMyUnspentTransactionOutputs, getUnspentTxOuts, sendTransaction
+    getBlockchain, getMyUnspentTransactionOutputs, getUnspentTxOuts, sendTransaction, generateNextBlock_modified
 } from './blockchain';
 import {connectToPeers, getSockets, initP2PServer} from './p2p';
 import {UnspentTxOut} from './transaction';
@@ -68,7 +68,7 @@ const initHttpServer = (myHttpPort: number) => {
     });
 
     app.post('/mineBlock', (req, res) => {
-        const newBlock: Block = generateNextBlock();
+        const newBlock: Block = generateNextBlock_modified();
         if (newBlock === null) {
             res.status(400).send('could not generate block');
         } else {
