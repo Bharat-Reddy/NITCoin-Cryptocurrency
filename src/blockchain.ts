@@ -33,14 +33,14 @@ class Block {
 const genesisTransaction = {
     'txIns': [{'signature': '', 'txOutId': '', 'txOutIndex': 0}],
     'txOuts': [{
-        'address': '04bfcab8722991ae774db48f934ca79cfb7dd991229153b9f732ba5334aafcd8e7266e47076996b55a14bf9913ee3145ce0cfc1372ada8ada74bd287450313534a',
+        'address': '0489be3da4ada8e07f7b7244ff5fbf9e33c984a6ce97b976358855805073ea2dd1717caa93792abea9a845a11d6a3b7331147cca7a580d6b6fa0ddba4a29fd4987',
         'amount': 50
     }],
-    'id': 'e655f6a5f26dc9b4cac6e46f52336428287759cf81ef5ff10854f69d68f43fa3'
+    'id': 'cbbcffaa869f660434c68f0a45d5bcf598699fde7933cb3fffded21b1d9c9591'
 };
 
 const genesisBlock: Block = new Block(
-    0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705, [genesisTransaction], 0, 0
+    0, '880cd9043b8b61b333bb164d707f0de2c17802d7bf58714f1f48a492b7a919d5', '', 1465154705, [genesisTransaction], 0, 0
 );
 
 let blockchain: Block[] = [genesisBlock];
