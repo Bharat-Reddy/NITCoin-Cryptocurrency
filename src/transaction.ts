@@ -150,10 +150,14 @@ const validateCoinbaseTx = (transaction: Transaction, blockIndex: number): boole
         console.log('invalid number of txOuts in coinbase transaction');
         return false;
     }
-    if (transaction.txOuts[0].amount !== COINBASE_AMOUNT) {
-        console.log('invalid coinbase amount in coinbase transaction');
-        return false;
+    /*
+    if (transaction.txOuts[0].amount !== 15 && transaction.txOuts[0].amount !== 17) {
+        if (transaction.txOuts[0].amount !== 20 && transaction.txOuts[0].amount !== 25) {
+            console.log('invalid coinbase amount in coinbase transaction');
+            return false;
+        }
     }
+    */
     return true;
 };
 
@@ -183,7 +187,7 @@ const findUnspentTxOut = (transactionId: string, index: number, aUnspentTxOuts: 
     return aUnspentTxOuts.find((uTxO) => uTxO.txOutId === transactionId && uTxO.txOutIndex === index);
 };
 
-const getCoinbaseTransaction = (address: string, blockIndex: number): Transaction => {
+const getCoinbaseTransaction = (address: string, blockIndex: number, difficulty: number): Transaction => {
     const t = new Transaction();
     const txIn: TxIn = new TxIn();
     txIn.signature = '';
@@ -191,7 +195,23 @@ const getCoinbaseTransaction = (address: string, blockIndex: number): Transactio
     txIn.txOutIndex = blockIndex;
 
     t.txIns = [txIn];
-    t.txOuts = [new TxOut(address, COINBASE_AMOUNT)];
+    let coinBaseAmount: number = 0;
+    if(difficulty === 15) {
+        coinBaseAmount = 15;
+    }
+    else if(difficulty === 17) {
+        coinBaseAmount = 17;
+    }
+    else if(difficulty === 20) {
+        coinBaseAmount = 20;
+    }
+    else {
+        coinBaseAmount = 25;
+    }
+
+    console.log("Coin Base Amount:");
+    console.log(coinBaseAmount);
+    t.txOuts = [new TxOut(address, coinBaseAmount)];
     t.id = getTransactionId(t);
     return t;
 };
