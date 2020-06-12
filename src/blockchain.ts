@@ -33,14 +33,14 @@ class Block {
 const genesisTransaction = {
     'txIns': [{'signature': '', 'txOutId': '', 'txOutIndex': 0}],
     'txOuts': [{
-        'address': '04bfcab8722991ae774db48f934ca79cfb7dd991229153b9f732ba5334aafcd8e7266e47076996b55a14bf9913ee3145ce0cfc1372ada8ada74bd287450313534a',
-        'amount': 50
+        'address': '0489be3da4ada8e07f7b7244ff5fbf9e33c984a6ce97b976358855805073ea2dd1717caa93792abea9a845a11d6a3b7331147cca7a580d6b6fa0ddba4a29fd4987',
+        'amount': 25
     }],
-    'id': 'e655f6a5f26dc9b4cac6e46f52336428287759cf81ef5ff10854f69d68f43fa3'
+    'id': 'fa28eb34c81e240759cce70b43a7e6f73005c295258de64f2dd2bb72e9d81ea4'
 };
 
 const genesisBlock: Block = new Block(
-    0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705, [genesisTransaction], 0, 0
+    0, '880cd9043b8b61b333bb164d707f0de2c17802d7bf58714f1f48a492b7a919d5', '', 1465154705, [genesisTransaction], 0, 0
 );
 
 let blockchain: Block[] = [genesisBlock];
@@ -116,15 +116,19 @@ const getCurrentTimestamp = (): number => Math.round(new Date().getTime() / 1000
 const generateRawNextBlock = (blockData: Transaction[]) => {
     const previousBlock: Block = getLatestBlock();
     let difficulty: number = 0;
-
+    /*
     if(blockData.length>1) {
-        difficulty = getModifiedDifficulty(blockData[1]);
+        difficulty = getModifiedDifficulty(blockData[0]);
     }
     else {
         difficulty = getDifficulty(getBlockchain());
     }
+    */
+    difficulty = getModifiedDifficulty(blockData[0]);
     console.log("Transaction Difficulty: ");
     console.log(difficulty);
+    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1, difficulty);
+    blockData.unshift(coinbaseTx);
     const nextIndex: number = previousBlock.index + 1;
     const nextTimestamp: number = getCurrentTimestamp();
     const newBlock: Block = findBlock(nextIndex, previousBlock.hash, nextTimestamp, blockData, difficulty);
@@ -143,21 +147,20 @@ const getMyUnspentTransactionOutputs = () => {
 };
 
 const generateNextBlock = () => {
-    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1);
+    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1, 0);
     const blockData: Transaction[] = [coinbaseTx].concat(getTransactionPool());
     return generateRawNextBlock(blockData);
 };
 
 const generateNextBlock_modified = () => {
-    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1);
+    
     const transactionPool: Transaction[] = getTransactionPool();
     if(transactionPool.length>0) {
         const userTransaction: Transaction = transactionPool[transactionPool.length-1];
-        const blockData: Transaction[] = [coinbaseTx,userTransaction];
+        const blockData: Transaction[] = [userTransaction];
         return generateRawNextBlock(blockData);
     } else {
-        const blockData: Transaction[] = [coinbaseTx].concat(getTransactionPool());
-        return generateRawNextBlock(blockData);
+        console.log("No transactions to mine!");
     }
     
 };
@@ -169,7 +172,7 @@ const generatenextBlockWithTransaction = (receiverAddress: string, amount: numbe
     if (typeof amount !== 'number') {
         throw Error('invalid amount');
     }
-    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1);
+    const coinbaseTx: Transaction = getCoinbaseTransaction(getPublicFromWallet(), getLatestBlock().index + 1, 0);
     const tx: Transaction = createTransaction(receiverAddress, amount, getPrivateFromWallet(), getUnspentTxOuts(), getTransactionPool());
     const blockData: Transaction[] = [coinbaseTx, tx];
     return generateRawNextBlock(blockData);
