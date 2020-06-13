@@ -2,7 +2,7 @@ import * as CryptoJS from 'crypto-js';
 import * as _ from 'lodash';
 import {broadcastLatest, broadCastTransactionPool} from './p2p';
 import {
-    getCoinbaseTransaction, isValidAddress, processTransactions, Transaction, UnspentTxOut, TxOut
+    getCoinbaseTransaction, isValidAddress, processTransactions, Transaction, UnspentTxOut, TxOut, getTransactionId
 } from './transaction';
 import {addToTransactionPool, getTransactionPool, updateTransactionPool} from './transactionPool';
 import {hexToBinary} from './util';
@@ -30,14 +30,16 @@ class Block {
     }
 }
 
-const genesisTransaction = {
+let genesisTransaction = {
     'txIns': [{'signature': '', 'txOutId': '', 'txOutIndex': 0}],
     'txOuts': [{
-        'address': '0489be3da4ada8e07f7b7244ff5fbf9e33c984a6ce97b976358855805073ea2dd1717caa93792abea9a845a11d6a3b7331147cca7a580d6b6fa0ddba4a29fd4987',
+        'address': '0460a9f2457b1d8006cbc6ba563c4fbfde79b3dbfe2975547611f9663e765e77ae96c7b1ce380ecb7712a9353baff1f9a2d48a0d991311052d977a7ade6eebf3e6',
         'amount': 25
     }],
     'id': 'fa28eb34c81e240759cce70b43a7e6f73005c295258de64f2dd2bb72e9d81ea4'
 };
+
+genesisTransaction.id = getTransactionId(genesisTransaction);
 
 const genesisBlock: Block = new Block(
     0, '880cd9043b8b61b333bb164d707f0de2c17802d7bf58714f1f48a492b7a919d5', '', 1465154705, [genesisTransaction], 0, 0

@@ -23,6 +23,10 @@ const initHttpServer = (myHttpPort: number) => {
         }
     });
 
+    app.get('/getPublic', (req, res) => {
+        res.send(getPublicFromWallet());
+    });
+
     app.get('/blocks', (req, res) => {
         res.send(getBlockchain());
     });
