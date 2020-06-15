@@ -20,11 +20,25 @@ function updateDetails() {
 	req2.open('GET', "http://localhost:3001/balance", true);
 	req2.send();
 
-	//get transaction pool
+	//getting block no
 	var req3 = new XMLHttpRequest();
 	req3.onreadystatechange = function (){
+		console.log("hey");
 		if(req3.status==200 && req3.readyState==4) {
-			var data = JSON.parse(req3.responseText);
+			console.log("what");
+			console.log(req3.responseText);
+//			var data = JSON.parse(req4.responseText);
+			document.getElementById('blockNo').innerHTML = req3.responseText;
+		}
+	}
+	req3.open('GET', "http://localhost:3001/blockNo", true);
+	req3.send();
+
+	//get transaction pool
+	var req4 = new XMLHttpRequest();
+	req4.onreadystatechange = function (){
+		if(req4.status==200 && req4.readyState==4) {
+			var data = JSON.parse(req4.responseText);
 			if(data.length>0)
 				document.getElementById('transactionPool').style.display = 'none';	
 			var table = document.getElementById('txPool');			
@@ -53,8 +67,8 @@ function updateDetails() {
 			}
 		}
 	}
-	req3.open('GET', "http://localhost:3001/transactionPool", true);
-	req3.send();
+	req4.open('GET', "http://localhost:3001/transactionPool", true);
+	req4.send();
 }
 
 

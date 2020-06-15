@@ -31,6 +31,10 @@ const initHttpServer = (myHttpPort: number) => {
         res.send(getBlockchain());
     });
 
+    app.get('/blockNo', (req, res) => {
+        res.send(String(getBlockchain().length));
+    });
+
     app.get('/block/:hash', (req, res) => {
         const block = _.find(getBlockchain(), {'hash' : req.params.hash});
         res.send(block);
