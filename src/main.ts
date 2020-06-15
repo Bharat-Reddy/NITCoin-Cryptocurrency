@@ -16,7 +16,7 @@ const p2pPort: number = parseInt(process.env.P2P_PORT) || 6001;
 const initHttpServer = (myHttpPort: number) => {
     const app = express();
     app.use(bodyParser.json());
-
+    app.use(express.static('src/UI'));
     app.use((err, req, res, next) => {
         if (err) {
             res.status(400).send(err.message);
@@ -105,7 +105,7 @@ const initHttpServer = (myHttpPort: number) => {
     app.post('/sendTransaction', (req, res) => {
         try {
             const address = req.body.address;
-            const amount = req.body.amount;
+            const amount = Number(req.body.amount);
 
             if (address === undefined || amount === undefined) {
                 throw Error('invalid address or amount');

@@ -1,0 +1,74 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/skeleton.css">
+
+    <title>naivecoin-vue</title>
+  <style type="text/css">
+.header-link {
+  color: black;
+  text-decoration: none; /* no underline */
+}
+.break-word {
+  word-wrap: break-word;
+}
+</style><style type="text/css">
+.transaction[data-v-365a8458] {
+  padding: 1em;
+  margin-bottom: 1em;
+  background-color: gainsboro;
+}
+</style></head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1><a href="/" class="header-link">NitCoin wallet</a></h1> 
+        <div>
+          <div  class="row break-word">
+            Your public address: <h5 class="break-word" id='pub_add'></h5>
+          </div> 
+          <div  class="row">
+            Your balance: <h5 id='balance'></h5>
+          </div> 
+          <br > 
+          <h5 >Send coins</h5> 
+            <div  class="row">
+              <div  class="ten columns">
+                <label  for="receiverAddress">Receiver address</label> 
+                <input  type="text" placeholder="04f72a4541275aeb4344a8b04..." id="receiverAddress" class="u-full-width">
+              </div>
+              <div  class="two columns">
+                <label  for="amount">Amount</label> 
+                <input  type="number" placeholder="0" id="amount" class="u-full-width">
+              </div>
+            </div> 
+            <button  class="button-primary" onclick="send()">Send</button>
+          <h5 >Transaction pool</h5>  
+          <div >
+            <h6 id='transactionPool'>No transactions in transaction pool</h6>
+            <table class="table table-striped" id="txPool">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">TxIns</th>
+                  <th scope="col">TxOuts</th>
+                  <th scope="col">Id</th>
+                </tr>
+              </thead>
+            </table>
+          </div> 
+          <br > 
+          <h5 >Mine block</h5> 
+          <button  class="button-primary" onclick="mine()">Click to mine block</button> 
+          <div >
+            
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- built files will be auto injected -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
+</html>
