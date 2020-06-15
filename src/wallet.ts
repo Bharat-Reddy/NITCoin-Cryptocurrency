@@ -107,8 +107,9 @@ const createTransaction = (receiverAddress: string, amount: number, privateKey: 
 
     const myUnspentTxOuts = filterTxPoolTxs(myUnspentTxOutsA, txPool);
 
+    const txnFees: number = 1;
     // filter from unspentOutputs such inputs that are referenced in pool
-    const {includedUnspentTxOuts, leftOverAmount} = findTxOutsForAmount(amount, myUnspentTxOuts);
+    const {includedUnspentTxOuts, leftOverAmount} = findTxOutsForAmount(amount+txnFees, myUnspentTxOuts);
 
     const toUnsignedTxIn = (unspentTxOut: UnspentTxOut) => {
         const txIn: TxIn = new TxIn();

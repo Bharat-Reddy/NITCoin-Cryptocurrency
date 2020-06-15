@@ -83,8 +83,8 @@ const validateTransaction = (transaction: Transaction, aUnspentTxOuts: UnspentTx
         .map((txOut) => txOut.amount)
         .reduce((a, b) => (a + b), 0);
 
-    if (totalTxOutValues !== totalTxInValues) {
-        console.log('totalTxOutValues !== totalTxInValues in tx: ' + transaction.id);
+    if (totalTxOutValues !== totalTxInValues && totalTxOutValues +1 !== totalTxInValues) {
+        console.log('totalTxOutValues !== totalTxInValues AND totalTxOutValues + 1 coin(transaction fees) !== totalTxInValues in tx: ' + transaction.id);
         return false;
     }
 
@@ -197,20 +197,22 @@ const getCoinbaseTransaction = (address: string, blockIndex: number, difficulty:
     t.txIns = [txIn];
     let coinBaseAmount: number = 0;
     if(difficulty === 15) {
-        coinBaseAmount = 15;
+        coinBaseAmount = 16;
     }
     else if(difficulty === 17) {
-        coinBaseAmount = 17;
+        coinBaseAmount = 18;
     }
     else if(difficulty === 20) {
-        coinBaseAmount = 20;
+        coinBaseAmount = 21;
     }
     else {
-        coinBaseAmount = 25;
+        coinBaseAmount = 26;
     }
 
     console.log("Coin Base Amount:");
     console.log(coinBaseAmount);
+    console.log("Transaction Fees:");
+    console.log(1);
     t.txOuts = [new TxOut(address, coinBaseAmount)];
     t.id = getTransactionId(t);
     return t;
