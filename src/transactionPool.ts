@@ -17,7 +17,7 @@ const addToTransactionPool = (tx: Transaction, unspentTxOuts: UnspentTxOut[]) =>
         throw Error('Trying to add invalid tx to pool');
     }
     console.log('adding to txPool: %s', JSON.stringify(tx));
-    transactionPool.push(tx);
+    transactionPool.unshift(tx);
 };
 
 const hasTxIn = (txIn: TxIn, unspentTxOuts: UnspentTxOut[]): boolean => {
