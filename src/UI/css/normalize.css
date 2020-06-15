@@ -419,9 +419,17 @@ optgroup {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
+  table-layout:fixed;
+}
+td { 
+    padding: 0;    
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    word-wrap: break-word;
 }
 
-td,
 th {
+
   padding: 0;
 }

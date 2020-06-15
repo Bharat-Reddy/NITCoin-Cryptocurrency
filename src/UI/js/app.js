@@ -32,17 +32,23 @@ function updateDetails() {
 				var row = table.insertRow();
 
 				var txIns = data[i]['txIns'][0];
-				var txOuts = data[i]['txOuts'][0];
+				var txOuts = data[i]['txOuts'];
 				var id = data[i]['id'];
 
 				var c=row.insertCell(0);
-				c.innerHTML = JSON.stringify(txIns);
+				c.innerHTML = (id);
 
 				var c=row.insertCell(1);
-				c.innerHTML = JSON.stringify(txOuts);
+				
+				var temp = "To&nbspAddress:&nbsp".bold().fontcolor("green") + data[i]['txOuts'][0].address;
+				temp = temp.concat("<br>Amount: ".bold().fontcolor("green") + data[i]['txOuts'][0].amount);
+				
+				temp = temp.concat("<br><br>To&nbspAddress:&nbsp".bold().fontcolor("green") + data[i]['txOuts'][1].address);
+				temp = temp.concat("<br>Amount: ".bold().fontcolor("green") + data[i]['txOuts'][1].amount);
+				c.innerHTML = (temp);
 
-				var c=row.insertCell(2);
-				c.innerHTML = JSON.stringify(id);
+				//var c=row.insertCell(2);
+				//c.innerHTML = JSON.stringify(id);
 
 			}
 		}

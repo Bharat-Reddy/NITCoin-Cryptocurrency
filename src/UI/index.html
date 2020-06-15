@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <link rel="stylesheet" type="text/css" href="css/skeleton.css">
 
-    <title>naivecoin-vue</title>
+    <title>NITCoin</title>
   <style type="text/css">
 .header-link {
   color: black;
@@ -23,7 +23,7 @@
   <body>
     <div id="app">
       <div class="container">
-        <h1><a href="/" class="header-link">NitCoin wallet</a></h1> 
+        <h1 style="color:DodgerBlue;"><a href="/" style="color:Tomato;" class="header-link">NITCoin wallet</a></h1> 
         <div>
           <div  class="row break-word">
             Your public address: <h5 class="break-word" id='pub_add'></h5>
@@ -32,7 +32,7 @@
             Your balance: <h5 id='balance'></h5>
           </div> 
           <br > 
-          <h5 >Send coins</h5> 
+          <h5 style="color:Tomato;">Send coins</h5> 
             <div  class="row">
               <div  class="ten columns">
                 <label  for="receiverAddress">Receiver address</label> 
@@ -44,21 +44,24 @@
               </div>
             </div> 
             <button  class="button-primary" onclick="send()">Send</button>
-          <h5 >Transaction pool</h5>  
+          <br >
+<br >
+<br >
+          <h5 style="color:Tomato;">Transaction pool</h5>  
           <div >
             <h6 id='transactionPool'>No transactions in transaction pool</h6>
-            <table class="table table-striped" id="txPool">
+            <table class="table table-striped" id="txPool" border = "1" width = "400" height = "150">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col">TxIns</th>
-                  <th scope="col">TxOuts</th>
-                  <th scope="col">Id</th>
+                  <th scope="col" style="color:Blue;">TxId</th>
+                  <th scope="col" style="color:Blue;">TxOuts</th>
+                  <!--<th scope="col">Id</th>-->
                 </tr>
               </thead>
             </table>
           </div> 
           <br > 
-          <h5 >Mine block</h5> 
+          <h5 style="color:Tomato;">Mine block</h5> 
           <button  class="button-primary" onclick="mine()">Click to mine block</button> 
           <div >
             
