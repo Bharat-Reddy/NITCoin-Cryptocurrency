@@ -41,7 +41,9 @@ function updateDetails() {
 			var data = JSON.parse(req4.responseText);
 			if(data.length>0)
 				document.getElementById('transactionPool').style.display = 'none';	
-			var table = document.getElementById('txPool');			
+			var table = document.getElementById('txPool');	
+			while(table.rows.length>1)
+				table.deleteRow(1);		
 			for(var i=0; i<data.length; i++) {
 				var row = table.insertRow();
 
@@ -57,8 +59,11 @@ function updateDetails() {
 				var temp = "To&nbspAddress:&nbsp".bold().fontcolor("green") + data[i]['txOuts'][0].address;
 				temp = temp.concat("<br>Amount: ".bold().fontcolor("green") + data[i]['txOuts'][0].amount);
 				
-				temp = temp.concat("<br><br>To&nbspAddress:&nbsp".bold().fontcolor("green") + data[i]['txOuts'][1].address);
-				temp = temp.concat("<br>Amount: ".bold().fontcolor("green") + data[i]['txOuts'][1].amount);
+				if(data[i]['txOuts'].length > 1) {
+					temp = temp.concat("<br><br>To&nbspAddress:&nbsp".bold().fontcolor("green") + data[i]['txOuts'][1].address);
+					temp = temp.concat("<br>Amount: ".bold().fontcolor("green") + data[i]['txOuts'][1].amount);
+				}
+
 				c.innerHTML = (temp);
 
 				//var c=row.insertCell(2);
